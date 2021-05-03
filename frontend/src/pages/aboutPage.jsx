@@ -1,11 +1,13 @@
 import * as React from 'react';
+
+// ============= styles & components =============
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Anchor, Box, Paragraph, Tab, Tabs } from 'grommet';
-
-import Navi from '../components/navi';
-import { howItWorks, landproParagraphs, referencedArticles} from '../components/landProBase';
 import SampleCard from '../components/landProBase/sampleCard';
+
+import { howItWorks, landproParagraphs, referencedArticles} from '../components/landProBase';
+// ===============================================
 
 const AboutPage = () => {
     
@@ -15,7 +17,7 @@ const AboutPage = () => {
   
     return (
       <>
-        <Navi />
+
         <Box flex direction='column' margin='large'  >
         <Tabs activeIndex={index} onActive={onActive}>
             <Tab title='How does it work' >

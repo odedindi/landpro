@@ -1,23 +1,23 @@
-import React, { useRef, useState, Fragment } from "react";
-import { Box, Button } from "grommet";
+import React, { useRef, useState } from "react";
 
-// ====================== leaflet ==========================
-import { FeatureGroup, LayersControl, Map as MapContainer, Polygon, TileLayer} from 'react-leaflet';
-import { EditControl } from "react-leaflet-draw";
-
+// ===============================================
+// =================== leaflet ===================
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 
-// ========================================================= 
-// ====================== map layers ======================= 
-import { mapTiles } from './mapLayers';
-// ========================================================= 
-// ======================  temp stuff ====================== 
+import { FeatureGroup, LayersControl, Map as MapContainer, Polygon, TileLayer} from 'react-leaflet';
+import { EditControl } from "react-leaflet-draw";
+
+// ===============================================
+// ================== map tiles ================= 
+import { mapTiles } from './mapTiles';
+// =============================================== 
+// =================  temp stuff ================= 
 
 import { temporalPolygon } from './experimetalPolygon';
 import AnalysisTable from "./analysisTable";
 
-// =========================================================
+// ===============================================
 
 import { MapWrapper, SubmitPolygons } from '../../styles/mapComponent';
 import { postCoordinates } from '../../helpers/fetches';

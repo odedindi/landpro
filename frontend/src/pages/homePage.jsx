@@ -4,7 +4,6 @@ import { Box, Stack } from 'grommet';
 
 import { HomePageWrapper } from '../styles/homePage';
 
-import Navi from '../components/navi';
 
 import LeafLetMap from '../components/mapComponent/drawOnMap';
 
@@ -15,7 +14,6 @@ const HomePage = () => {
 
   return (
     <>
-      <Navi />
         <HomePageWrapper>
           <LeafLetMap />
         </HomePageWrapper>

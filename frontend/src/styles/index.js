@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+
 export const LandProButton = styled.button `
     cursor: pointer;
     font-size: 1.25em;
@@ -10,10 +11,12 @@ export const LandProButton = styled.button `
 
     :hover{
         font-Weight: bolder;
-    }
+    };
     :active {
         font-weight: normal;
-    }
+        color: #E47D31;
+        background-color: transparent;
+    };
 `;
 
 export const SpinnerWrapper = styled.div `
@@ -23,3 +26,4 @@ export const SpinnerWrapper = styled.div `
   margin-top: -50px;
   margin-left: -50px;
 `;
+
