@@ -1,19 +1,16 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router';
-import { useDispatch } from 'react-redux';
 
-// ========================== componens ==========================
-import { FieldEmail, FieldPassword, HideRevealButton, 
-    LoginButton, LoginWrapper } from '../styles/loginPage';
-    
-    import { Hide, View } from 'grommet-icons';
-    // ===============================================================
-    // =========================== store =============================
-    import { loginFetch } from '../helpers/fetches';
+// ============= styles & components =============
+import { FieldEmail, FieldPassword, HideRevealButton, InputWrapper, 
+    LoginButton, LoginWrapper } from '../styles/loginPage'; 
+import { Hide, View } from 'grommet-icons';
+// ===============================================
+// ================== backend ====================
+import { loginFetch } from '../helpers/fetches';
+// ===============================================
 
-// ===============================================================
 const LoginPage = () => {
-    const dispatch = useDispatch();
     const history = useHistory();
 
     const [ email, setEmail ] = useState('');
@@ -31,12 +28,13 @@ const LoginPage = () => {
         setPassword(event.currentTarget.value); 
     };
 
+    const revealHandler = () => setReveal(!reveal);
+
     const loginHandler = async (event) => {
         event.preventDefault();
         const response = await loginFetch(email, password);
         if (response.ok) {
             const data = await response.json();
-            console.log(data);
             localStorage.setItem('token', data.access);
             return history.push('/')
         };
@@ -47,27 +45,21 @@ const LoginPage = () => {
         <LoginWrapper>
             <form onSubmit={ loginHandler }>
                 <h1>Login</h1>
-                <div>
+                <InputWrapper>
                     <label>E-Mail:</label>
                     <FieldEmail id='email' type='email' 
                         value={ email } onChange={ handleEmail }
                     />
-                </div>
-                <div>
+                </InputWrapper>
+                <InputWrapper>
                     <label>Password:</label>
                     <FieldPassword id='password' type={ reveal ? 'text' : 'password' } 
                         value={ password } onChange={ handlePassword }
                     />
-                    <HideRevealButton 
-                        icon={ reveal ? <View /> : <Hide /> } 
-                        onClick={ () => setReveal(!reveal) }
-                    />
-
-                </div>
+                    <HideRevealButton onClick={ revealHandler }>{ reveal ? <View /> : <Hide /> } </HideRevealButton>
+                </InputWrapper>
                 <LoginButton type='submit'>Login</LoginButton>
-                { 
-                    wrongLoginDetails && wronDetailsMessage
-                }
+                { wrongLoginDetails && wronDetailsMessage }
             </form>
         </LoginWrapper>
     )

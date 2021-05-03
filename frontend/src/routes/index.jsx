@@ -5,9 +5,9 @@ import { Redirect } from 'react-router-dom';
 
 // ============= styles & components =============
 import NavBar from '../components/navBar';
-import Spinner from '../components/spinner';
+import { SpinnerWrapper } from '../styles';
+import Spinner from 'react-bootstrap/Spinner'
 import { WithAuth } from '../components/HOC/withAuth';
-
 // ===============================================
 // ==================== pages ====================
 const HomePage = lazy(() => import('../pages/homePage'));
@@ -22,11 +22,19 @@ const history = createBrowserHistory();
 
 const Routes = () => {
 
+    const spinner = (
+        <SpinnerWrapper>
+            <Spinner animation='border' variant='info' role='status'>
+                <span>Loading...</span>
+            </Spinner>
+        </SpinnerWrapper>
+    );
+
     return (
         <>
         <Router history={ history }>
             <NavBar/>
-            <Suspense fallback={ Spinner }>
+            <Suspense fallback={ spinner }>
                 <Switch>
                     <Route exact path='/' component={ WithAuth(HomePage) }/>
                     <Route exact path='/analysis' component={ WithAuth(AnalysisPage) }/>

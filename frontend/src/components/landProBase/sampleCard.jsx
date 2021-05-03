@@ -3,8 +3,6 @@ import React from 'react';
 import { Box, Card, CardBody, CardHeader, Heading, Image, Stack, Text } from 'grommet';
 
 
-
-
 const SampleCard = (props) => {
 
     return (

@@ -1,59 +1,51 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 
 // ============= styles & components =============
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-import { Anchor, Box, Paragraph, Tab, Tabs } from 'grommet';
+import { Paragraph } from 'grommet';
 import SampleCard from '../components/landProBase/sampleCard';
-
 import { howItWorks, landproParagraphs, referencedArticles} from '../components/landProBase';
+import { AboutPageWrapper, AboutTab, AboutTabs, HDIW } from '../styles/about';
 // ===============================================
+
 
 const AboutPage = () => {
     
-    const [index, setIndex] = React.useState();
+  const [ showSpan, setShowSpan ] = useState('hdiw')
 
-    const onActive = nextIndex => setIndex(nextIndex);
+  const tabChangeHandler = (tabId) =>  setShowSpan(tabId);
   
-    return (
-      <>
-
-        <Box flex direction='column' margin='large'  >
-        <Tabs activeIndex={index} onActive={onActive}>
-            <Tab title='How does it work' >
-              <Box fill pad="medium" align="center">
-                <Box width='85%' alignSelf='center'>
-                  <Box flex direction='row' width='85%' justify='center' alignSelf='center' >
-                      {howItWorks.map((stage, index) => (
-                          <SampleCard stage={stage} key={index}/>
-                      ))}
-                  </Box>
-                  <Paragraph>
-                    To read more, please check 
-                    <Anchor 
-                        href={referencedArticles.link} label=' this publication' />.
-                  </Paragraph> 
-                </Box>
-              </Box>
-            </Tab>
-            <Tab title='Inspiration' >
-              <Box fill pad="center" align="center">
-                <Box  margin='medium' flex direction='column' >
-                  <Box width='85%' alignSelf='center'>
-                      {landproParagraphs.map((paragraph, index) => (
-                      <Paragraph fill key={index} size='medium' textAlign='center'>
-                          {paragraph}
-                      </Paragraph>
-                      ))}
-                  </Box>
-                </Box>
-              </Box>
-            </Tab>
-        </Tabs>
-        </Box>
-      </>
-    );
-  };
+  return ( 
+    <AboutPageWrapper>
+      <AboutTabs>
+        <AboutTab onClick={ ()=> tabChangeHandler('hdiw') }>
+          <span className={ showSpan === 'hdiw' && 'showSpan' }>How does it work</span>
+        </AboutTab>
+        <AboutTab onClick={ ()=> tabChangeHandler('insp') }>
+          <span className={ showSpan === 'insp' && 'showSpan' }>Inspiration</span>
+        </AboutTab>
+      </AboutTabs>
+      {
+        showSpan === 'hdiw' && (
+          <>
+          <HDIW>
+            { 
+              howItWorks.map((stage, index) => <SampleCard stage={stage} key={index}/>) 
+            }
+          </HDIW> 
+          <p>
+            To read more, please check <a href={ referencedArticles.link }>this</a> publication.
+          </p>
+          </>       
+        )
+      }
+      {
+        showSpan === 'insp' && landproParagraphs.map((paragraph, index) => 
+          <Paragraph fill key={index} size='medium' textAlign='center'>{paragraph}</Paragraph>
+        )
+      }
+    </AboutPageWrapper>
+  );
+};
   
-
 export default AboutPage;

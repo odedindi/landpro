@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
+export const brandColor = '#E47D31';
 
 export const LandProButton = styled.button `
     cursor: pointer;
     font-size: 1.25em;
     border: none;
     border-radius: 40px 40px 40px 40px;
-    background-color: #E47D31;
+    background-color: ${ brandColor };
     color: white;
 
     :hover{
@@ -14,8 +15,9 @@ export const LandProButton = styled.button `
     };
     :active {
         font-weight: normal;
-        color: #E47D31;
+        color: ${ brandColor };
         background-color: transparent;
+        border: solid 0.0125em ${ brandColor };
     };
 `;
 
@@ -26,4 +28,3 @@ export const SpinnerWrapper = styled.div `
   margin-top: -50px;
   margin-left: -50px;
 `;
-

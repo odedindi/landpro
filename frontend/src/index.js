@@ -10,12 +10,11 @@ import { grommet, Grommet } from 'grommet';
 
 
 ReactDOM.render(
-  <React.StrictMode>
+
      <Provider store={ store }>
-     <Grommet theme={ grommet }>
-            <Routes />
-     </Grommet>
-    </Provider>
-  </React.StrictMode>,
+      <Grommet theme={ grommet }>
+        <Routes />
+      </Grommet>
+    </Provider>,
   document.getElementById('root')
 );
