@@ -2,27 +2,26 @@ import React from 'react';
 
 // ============= styles & components =============
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-import { Box } from 'grommet';
 import DetailedDataTable from '../components/DataAnalysis/detailedDataTable';
 
 import { AnalysisPageWrapper } from '../styles/analysisPage';
-// ===============================================
 
+import { DataTable } from '../components/dataTable';
+// ===============================================
+// =============== temp data =====================
+import { data } from '../components/dataTable/tempData';
+// ===============================================
 
 const AnalysisPage = () => {
   return (
     <>
     <AnalysisPageWrapper>
-
-    </AnalysisPageWrapper>
-      <Box width="95vw" height="2xl" margin='medium' pad='medium' alignSelf='center' direction='coulmn' >
-      <Box elevation='medium' width='2xl' height='100%' border>
           <DetailedDataTable />
-        </Box>
-        <Box align='end' justify='center' margin='medium'>
-        </Box>
-      </Box>
+          {/* <div style={{ height: '50em', width: '100%'}}>
+
+          <DataTable data={data} />
+          </div> */}
+    </AnalysisPageWrapper>
     </>
   );
 };

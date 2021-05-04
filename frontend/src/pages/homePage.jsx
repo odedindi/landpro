@@ -9,6 +9,8 @@ import AnalysisTable from "../components/mapComponent/analysisTable";
 // ===============================================
 // ================== backend ====================
 import { postCoordinates } from '../helpers/fetches';
+import { DataTable } from '../components/dataTable';
+import { data } from '../components/dataTable/tempData';
 // ===============================================
 
 
@@ -81,6 +83,10 @@ const HomePage = () => {
             Object.entries(results).length === 0 ? null
             : <AnalysisTable results={ results.data }/>
           }
+
+          {/* <div style={{ height: '30em', width: '100%', alignSelf: 'center'}}>
+            <DataTable data={data} />
+          </div> */}
         </HomePageWrapper>
     </>
   );
