@@ -17,8 +17,8 @@ based on our climate_hackathon little project for the cool farm alliance challen
 in order to get into the admin control panel you gotta create a super user,
 from the terminal locate the land_pro container by running the command: docker ps
 copy the container id (it should look like: 5ce56d598053)
-enter in to the container with the commande docker exec -ti {containerID} bash
-and from within the container run the command python manage.py createsuperuser
+* enter in to the container with the commande docker exec -ti {containerID} bash
+* from within the container run the command python manage.py createsuperuser
 and follow the instructions
 
 * if the container is up you should be able to access it via the browser at http://0.0.0.0:8000
