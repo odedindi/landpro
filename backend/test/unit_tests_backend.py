@@ -1,14 +1,20 @@
 # -*- coding: utf-8 -*-
-"""Unit tests for the funcitons in data"""
+"""Unit tests for the functions  to retrieve & preprocess and data"""
 
 import unittest
-import sys
 from pathlib import Path
-sys.path.append(Path("..", "src"))
+import json
+from backend.calculations.data import retrieve_dataset
+TEST_JSON_PATH = Path("..", "..","data", "test_data", "aoi_ita.geojson")
+RAW_DATA_PATH = Path("..", "..","data", "raw")
 
 class Test_q_data(unittest.TestCase):
 
     def test_retrieve_data(self):
+        ds = retrieve_dataset(TEST_JSON_PATH, RAW_DATA_PATH, mode="ndvi")
+        print(ds)
+        output_path = RAW_DATA_PATH / ( str(ds) + f"_0_ndvi.zip")
+        self.assertTrue(output_path.exists())
         #TODO implement this test
         pass
     def test_calc_soil_co2(self):

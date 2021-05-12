@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-""""Functions to retrieve data from APIs or cloud storage"""
+""""Functions to retrieve data from GEE"""
 
 from pathlib import Path
 import os
@@ -128,9 +128,17 @@ def download_data_from_link(link, area_name, mode, data_parent_path=None):
     return None
 
 
-def download_dataset(aoi_path, data_parent_path=None, get_sent2=True, get_glc=True, get_ndvi=True):
-    """ Retrieves input and target data from gee
-    to train ml model"""
+def retrieve_dataset(aoi_path, data_parent_path=None, mode=None):
+    """ Retrieves ndvi, sentinel multispectral and global land cover from GEE (cloud free and preprocessed)
+
+    Params:
+    - aoi_path : str or Posixpath - Path to json file
+    - data_parent_path: str or Posixpath - Path to output data directory (should be ../data/raw)
+    - mode: str or list(str) - one or more of 'sentinel_raw', 'global_land_cover', 'ndvi'
+
+    Returns:
+        str identifier of dataset downloaded in data_parent_path
+    """
     with open(aoi_path) as f:
         coords = json.load(f)
     coords_list = coords['features']
@@ -143,18 +151,17 @@ def download_dataset(aoi_path, data_parent_path=None, get_sent2=True, get_glc=Tr
 
         # if needed for area identification add this "_".join([str(abs(round(a[0]*10e2))) + str(abs(round(a[1]*10e2))) for a in c])
         area_name = timestamp + "_" + str(n)
-        if get_sent2:
-            link = get_gee_data(aoi=c, mode="sentinel_raw")
-            download_data_from_link(link, area_name, mode="sentinel_raw", data_parent_path=data_parent_path)
-        if get_glc:
-            link2 = get_gee_data(aoi=c, mode="global_land_cover")
-            download_data_from_link(link2, area_name,mode="global_land_cover", data_parent_path=data_parent_path)
-        if get_ndvi:
-            link3 = get_gee_data(aoi=c, mode="ndvi")
-            download_data_from_link(link3, area_name, mode="ndvi", data_parent_path=data_parent_path)
+        if not isinstance(mode, list):
+            if mode:
+                mode = [mode]
+            else:
+                raise ValueError("mode should be a str or list of strings. Choose one or more of 'sentinel_raw', 'global_land_cover', 'ndvi'")
+        for m in mode:
+            link = get_gee_data(aoi=c, mode=m)
+            download_data_from_link(link, area_name, mode=m, data_parent_path=data_parent_path)
     return timestamp
 
 
 if __name__ == '__main__':
     aoi_path = Path("..", "..", "data", "raw", "test_aoi_global_100.geojson")
-    download_dataset(aoi_path)
+    retrieve_dataset(aoi_path)
