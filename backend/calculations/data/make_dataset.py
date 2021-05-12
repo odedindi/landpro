@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+""" Prepares raw images for land cover segmentation and metrics """
 from pathlib import Path
 import os
 import zipfile
@@ -8,7 +8,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import interpolate
 from shutil import rmtree
-
+#TODO: update module to skip segmentation
+PARENT_PATH = Path("..", "..", "..", "data", "raw")
 
 def create_geoTiff(dst_filepath, fin_array, data0, band_num=1):
     x_pixels = fin_array.shape[1]  # number of pixels in x
@@ -170,7 +171,7 @@ def make_dataset(dataset_name, parent_data_path=None, resize_dim = [256,256]):
             path_to_image.unlink()
 
 if __name__ == '__main__':
-    dataset_name = "20210325175353219035"
+    dataset_name = "20210512154935283175"
 
     make_dataset(dataset_name)
     # not used in this stub but often useful for finding various files
