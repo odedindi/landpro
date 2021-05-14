@@ -10,11 +10,13 @@ from rasterio import plot
 from rasterio.plot import show
 from rasterio.mask import mask
 import os
+import gdal
+import json
+from pathlib import Path
 
 # needed files
 # soil_co2_estimate for europe
 
-src = rasterio.open('soc_europe_250m.tif')
 
 
 def calc_soil_co_metric(aoi):
@@ -22,6 +24,7 @@ def calc_soil_co_metric(aoi):
     aoi is a json file with multiple polygones
     returns updated aoi with co2 estimates for each polygone as attributes
     """
+    src = rasterio.open('soc_europe_250m.tif')
     gdf = gpd.read_file(aoi)
 
     soc_array = np.zeros(len(gdf['geometry']))
@@ -42,3 +45,40 @@ def calc_soil_co_metric(aoi):
 
     print(soc_array)
     gdf['soc_metrics'] = soc_array
+
+def check_input(aoi_poly) -> None:
+    """check the input json file, raise error if:
+    file doesn't exist
+    file doesn't have coordinates
+    Params:
+    aoi:
+    Returns: None    """
+    if not isinstance(aoi_poly, dict):
+        raise ValueError(f"input  should be a str or json instead is {type(aoi_poly)}")
+    #TODO: add check for coordinates
+
+def random_soil_estimates(aoi_poly)-> list:
+    """returns a list with a random number for each polygon in aoi_poly"""
+    veg_estimates = []
+    for _ in aoi_poly["coordinates"]:
+        veg_estimates.append( np.random.randint(10))
+    return veg_estimates
+
+
+
+def main(aoi_poly)->json:
+    """gets a json file (subdivided into polygons) and adds
+    a property "soil_co_estimates" with estimates from soil"""
+
+    check_input(aoi_poly)
+    soil_est = random_soil_estimates(aoi_poly)
+    aoi_poly["soil_co_estimates"]= soil_est
+    return aoi_poly
+
+if __name__ == '__main__':
+    aoi_path = Path("..", "..", "..", "data", "test_data", "aoi_ita_subdiv.geojson")
+    with open(aoi_path, "r+") as f:
+        aoi_poly = json.load(f)
+
+    aoi_poly_with_soil_est = main(aoi_poly)
+    print(aoi_poly_with_soil_est)
