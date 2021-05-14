@@ -6,9 +6,10 @@ sys.path.append("..")
 import data
 import os
 from models import predict_model
-# from models import calc_vegetation_co_metric, calc_soil_co_metric
+from features import split_polygon, calculate_co_veg_metrics, calculate_co_soil_metrics
 from pathlib import Path
 import pathlib
+import json
 
 DATA_PARENT_PATH = Path("..", "..", "data", "raw")
 
@@ -28,7 +29,6 @@ def check_input(aoi_path) -> None:
         raise TypeError(f"{aoi_path} should be a JSON/GEOJSON file")
 
 
-# TODO: make this function work
 def predict_main(aoi_path):
     """this functions takes as input the json file from frontend and returns the subpolygones with co2 metrics
     aoi_path: str - json file with area of interest from frontend
@@ -38,20 +38,18 @@ def predict_main(aoi_path):
     #1. download images from gee
 
     # retrieve data: ndvi, land cover and so on
-    dataset_name = data.retrieve_dataset(aoi_path, data_parent_path=DATA_PARENT_PATH,
-                                         mode=['global_land_cover', 'ndvi'])
+    #dataset_name = data.retrieve_dataset(aoi_path, data_parent_path=DATA_PARENT_PATH,
+    #                                     mode=['global_land_cover', 'ndvi'])
     # preprocess data (creates dataset folder structure in data/preprocessed
-    data.make_dataset(dataset_name)
 
     # 2. split into subpolygones using land cover
     # prediction is a json with subpolygones
-    prediction = split_polygon(aoi_path, dataset_name)
-
+    prediction = split_polygon(aoi_path)
+    prediction=json.loads(prediction)
     #3. get co2 estimates
-    prediction = calc_vegetation_co_metric(prediction)  # adds attribute "veg_co2_metric" to predictions
-    prediction = calc_soil_co_metric(prediction)  # adds attribute "soil_co2_metric" to predictions
-    # return prediction
-    pass
+    prediction = calculate_co_veg_metrics(prediction)  # adds attribute "veg_co2_metric" to predictions
+    prediction = calculate_co_soil_metrics(prediction)  # adds attribute "soil_co2_metric" to predictions
+    return prediction
 
 
 if __name__ == '__main__':
@@ -59,4 +57,8 @@ if __name__ == '__main__':
 
     aoi_path = Path("..", "..", "data", "test_data", "aoi_ita.geojson")
     print(type(aoi_path))
-    predict_main(aoi_path)
+    complete_json = predict_main(aoi_path)
+    fin_path = aoi_path.parent / "aoi_ita_with_metrics.geojson"
+
+    with open(fin_path, "x+") as f:
+        f.write(str(complete_json))

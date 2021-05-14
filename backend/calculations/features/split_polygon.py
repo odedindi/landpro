@@ -84,7 +84,9 @@ def poly_to_geojson(sub_aoi_poly):
     return json.dumps(mapping(sub_aoi_poly))
 
 def main(aoi_path):
-    """main function to split the area of interest in multiple polygons """
+    """main function to split the area of interest in multiple polygons:
+     Params:
+     aoi_path: str or PosixPath"""
     check_input(aoi_path)
     aoi_poly = load_as_polygon_shapely(aoi_path)
     # TODO: implement actual splitting
@@ -97,3 +99,7 @@ if __name__ == '__main__':
     aoi_path = Path("..", "..", "..","data", "test_data", "aoi_ita.geojson")
     sub_poly = main(aoi_path)
     print(sub_poly)
+    fin_path = aoi_path.parent / "aoi_ita_subdiv.geojson"
+
+    with open(fin_path, "x+") as f:
+        f.write(sub_poly)
