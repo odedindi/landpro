@@ -33,22 +33,23 @@ def predict_main(aoi_path):
     """this functions takes as input the json file from frontend and returns the subpolygones with co2 metrics
     aoi_path: str - json file with area of interest from frontend
     """
+    #0. check inputs
     check_input(aoi_path)
-    # download images from gee
-    data_parent_path = Path("..", "data", "raw")
+    #1. download images from gee
+
+    # retrieve data: ndvi, land cover and so on
     dataset_name = data.retrieve_dataset(aoi_path, data_parent_path=DATA_PARENT_PATH,
                                          mode=['global_land_cover', 'ndvi'])
-
     # preprocess data (creates dataset folder structure in data/preprocessed
     data.make_dataset(dataset_name)
 
-    # predict land cover
-    # prediction = predict_model(dataset_name)
+    # 2. split into subpolygones using land cover
     # prediction is a json with subpolygones
+    prediction = split_polygon(aoi_path, dataset_name)
 
-    # get co2 estimations
-    # prediction = calc_vegetation_co_metric(prediction)  # adds attribute "veg_co2_metric" to predictions
-    # prediction = calc_soil_co_metric(prediction)  # adds attribute "soil_co2_metric" to predictions
+    #3. get co2 estimates
+    prediction = calc_vegetation_co_metric(prediction)  # adds attribute "veg_co2_metric" to predictions
+    prediction = calc_soil_co_metric(prediction)  # adds attribute "soil_co2_metric" to predictions
     # return prediction
     pass
 
