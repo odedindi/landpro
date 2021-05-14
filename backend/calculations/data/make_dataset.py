@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+""" Prepares raw images for land cover segmentation and metrics """
 from pathlib import Path
 import os
 import zipfile
@@ -8,6 +8,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import interpolate
 from shutil import rmtree
+#TODO: update module to skip segmentation
+
+PARENT_DATA_PATH = Path("..", "..", "..", "data")
+
+def check_inputs(dataset_name, parent_data_path)->None:
+    raw_data_path = parent_data_path / "raw"
+    if not raw_data_path.exists():
+        raise FileNotFoundError(f"couldn't find 'raw folder in {parent_data_path}")
+    elif not any([f for f in os.listdir(raw_data_path) if (f.startswith(dataset_name)) and (f.endswith('zip')) ]):
+        raise FileNotFoundError(f"couldn't find any dataset {dataset_name} in {raw_data_path}")
 
 
 def create_geoTiff(dst_filepath, fin_array, data0, band_num=1):
@@ -62,6 +72,7 @@ def resize_with_gdal(geo_dataset_path, resize_dim):
     ds = Translate(str(dest_path), geo_obj, **t_o)
     ds = None
 
+#TODO: remove "images" in the following function
 def preprocess_sentinel_images(raw_file_path, dest_path):
     input_filename = str(raw_file_path.name).replace("_sentinel_raw.zip", "")
     unzip_folder = dest_path / "images" / input_filename
@@ -130,47 +141,45 @@ def preprocess_glc(raw_file_path, dest_path, scalar_pixels=True, refine=0):
                 rmtree(dest_path / f)
 
 
-def make_dataset(dataset_name, parent_data_path=None, resize_dim = [256,256]):
+def make_dataset(dataset_name, parent_data_path=PARENT_DATA_PATH, resize_dim = [256,256]):
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../processed).
     """
-    if parent_data_path == None:
-        parent_data_path = Path("..", "..", "data", "raw")
-    # get all data belonging to a dataset
-    images_file_list = sorted(
-        [f for f in os.listdir(parent_data_path) if dataset_name in f and f.endswith("sentinel_raw.zip")])
-    masks_file_list = sorted(
-        [f for f in os.listdir(parent_data_path) if dataset_name in f and f.endswith("global_land_cover.zip")])
-
+    check_inputs(dataset_name, parent_data_path)
     # prepare destination folder
-    parent_dest_path = Path("..", "..", "data", "processed")
-    dest_path = parent_dest_path / dataset_name
-    if not os.path.isdir(dest_path):
-        os.mkdir(dest_path)
-        os.mkdir(dest_path / "images")
-        os.mkdir(dest_path / "masks")
-        os.mkdir(dest_path / "predictions")
+    raw_data_path = parent_data_path / "raw"
+    processed_data_path = parent_data_path / "processed"
+    ds_processed_path = processed_data_path / dataset_name
+    try:
+        os.mkdir(ds_processed_path)
+        os.mkdir(ds_processed_path / "images")
+        os.mkdir(ds_processed_path / "masks")
+        os.mkdir(ds_processed_path / "predictions")
+    except Exception:
+        print(f"WARNING: {ds_processed_path} exists")
+
+    # get all data belonging to a dataset
+    raw_data_file_list = sorted([f for f in os.listdir(raw_data_path) if dataset_name in f])
 
     # preprocess  sentinel images
-    for img in images_file_list:
-        preprocess_sentinel_images(parent_data_path / img, dest_path)
+    for img in (img for img in raw_data_file_list if img.endswith("sentinel_raw.zip")):
+        preprocess_sentinel_images(raw_data_path / img, ds_processed_path)
     # preprocess glc images as masks
-    for img in masks_file_list:
-        print("dest path:", dest_path)
-        preprocess_glc(parent_data_path / img, dest_path / "masks", refine=0)
+    for img in (img for img in raw_data_file_list if img.endswith("global_land_cover.zip")):
+        preprocess_glc(parent_data_path / img, ds_processed_path / "masks", refine=0)
     if resize_dim:
-        for f in os.listdir(dest_path / "images"):
-            path_to_image = dest_path / "images" / f
+        for f in os.listdir(ds_processed_path / "images"):
+            path_to_image = ds_processed_path / "images" / f
             resize_with_gdal(path_to_image, resize_dim)
             path_to_image.unlink()
 
-        for f in os.listdir(dest_path / "masks"):
-            path_to_image = dest_path / "masks" / f
+        for f in os.listdir(ds_processed_path / "masks"):
+            path_to_image = ds_processed_path / "masks" / f
             resize_with_gdal(path_to_image, resize_dim)
             path_to_image.unlink()
 
 if __name__ == '__main__':
-    dataset_name = "20210325175353219035"
+    dataset_name = "20210512154935283175"
 
     make_dataset(dataset_name)
     # not used in this stub but often useful for finding various files
