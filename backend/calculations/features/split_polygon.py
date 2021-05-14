@@ -7,7 +7,7 @@ import pathlib
 from pathlib import Path
 import os
 import json
-from shapely.geometry import shape, LineString, mapping
+from shapely.geometry import shape, LineString, mapping, MultiPolygon
 from shapely.ops import split
 import matplotlib.pyplot as plt
 
@@ -57,11 +57,12 @@ def load_as_polygon_shapely(aoi_path):
     g = shape(coords_list)
     return g
 
+## test function to split
 def naive_split(aoi_poly):
     """splits in 4 using centre to make a pseudo landcover subdividion"""
     print("WARNING: this split doesn't actually make sense!!")
     #TODO: under
-    minX, minY, maxY, maxX = aoi_poly.bounds
+    minX, minY, maxX, maxY = aoi_poly.bounds
     # creating two lines to split in the centre
     # get coordinates
     v_line_coords = [[ minX + .5*(maxX-minX), maxY ], [ minX + .5*(maxX-minX), minY ]]
@@ -70,28 +71,25 @@ def naive_split(aoi_poly):
     v_line = LineString(v_line_coords)
     h_line = LineString(h_line_coords)
 
-    new_poly = split(aoi_poly, v_line)
-    new_poly = split(new_poly, h_line)
-    return new_poly
-
-
-
-
+    new_poly = split(aoi_poly,v_line)
+    new_poly_ls = []
+    for i in new_poly:
+        new_i=split(i, h_line)
+        new_poly_ls += new_i
+    new_poly2 = MultiPolygon(new_poly_ls)
+    return new_poly2
 
 def poly_to_geojson(sub_aoi_poly):
     """transforms the polygon(subdivided) into a json"""
     return json.dumps(mapping(sub_aoi_poly))
 
-
 def main(aoi_path):
     """main function to split the area of interest in multiple polygons """
     check_input(aoi_path)
     aoi_poly = load_as_polygon_shapely(aoi_path)
-
     # TODO: implement actual splitting
     sub_aoi_poly = naive_split(aoi_poly)
     return poly_to_geojson(sub_aoi_poly)
-
 
 if __name__ == '__main__':
     import os
