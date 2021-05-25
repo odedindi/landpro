@@ -8,9 +8,11 @@ from backend.calculations.data import retrieve_dataset
 from backend.calculations.features import split_polygon
 import json
 
-TEST_JSON_PATH = Path("..", "..","data", "test_data", "aoi_ita.geojson")
 RAW_DATA_PATH = Path("..", "..","data", "raw")
-
+# load test_json for area of interest
+TEST_JSON_PATH = Path("..", "..","data", "test_data", "aoi_ita.geojson")
+with open(TEST_JSON_PATH) as f:
+    AOI_JSON = json.load(f)
 
 class Test_q_data(unittest.TestCase):
 
@@ -21,9 +23,10 @@ class Test_q_data(unittest.TestCase):
         self.assertTrue(output_path.exists())
         #TODO implement this test
         pass
+
     def test_split_poly(self):
         print("WARNING: This test works only for naive split")
-        my_json = split_polygon(TEST_JSON_PATH)
+        my_json = split_polygon(AOI_JSON)
         my_json = json.loads(my_json)
         self.assertEqual(len(my_json["coordinates"]), 4, ("json should have 4 polygons"))
 
