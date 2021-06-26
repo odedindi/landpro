@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 // ============= styles & components =============
 import { FieldEmail, FieldPassword, HideRevealButton, InputWrapper, 
     LoginButton, LoginWrapper } from '../styles/loginPage'; 
-import { Hide, View } from 'grommet-icons';
+
 // ===============================================
 // ================== backend ====================
 import { loginFetch } from '../helpers/fetches';
@@ -62,7 +62,7 @@ const LoginPage = () => {
                     <FieldPassword id='password' type={ reveal ? 'text' : 'password' } 
                         value={ password } onChange={ handlePassword }
                     />
-                    <HideRevealButton onClick={ revealHandler }>{ reveal ? <View /> : <Hide /> } </HideRevealButton>
+                    <HideRevealButton onClick={ revealHandler }>{ reveal ? ''/*<View /> */ : '' /* <Hide />*/ } </HideRevealButton>
                 </InputWrapper>
                 <LoginButton type='submit'>Login</LoginButton>
                 { wrongLoginDetails && wronDetailsMessage }

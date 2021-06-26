@@ -1,6 +1,6 @@
-import firstImage from '../../assets/Landpro1.png';
-import secondImage from '../../assets/Landpro2.png';
-import thirdImage from '../../assets/Landpro3.png';
+import firstImage from '../../assets/imgs/landProBase/Landpro1.png';
+import secondImage from '../../assets/imgs/landProBase/Landpro2.png';
+import thirdImage from '../../assets/imgs/landProBase/Landpro3.png';
 
 export const landproParagraphs = [
 

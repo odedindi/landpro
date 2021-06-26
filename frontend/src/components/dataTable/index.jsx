@@ -1,5 +1,4 @@
-import { ResponsiveFunnel } from '@nivo/funnel';
-import { ResponsiveStream } from '@nivo/stream'
+
 import styled from 'styled-components';
 
 // import { data } from './tempData';
@@ -11,7 +10,7 @@ const TableWrapper = styled.div `
 export const DataTable = ({data} /* see data tab */ ) => {
     return (
         <TableWrapper>
-        <ResponsiveFunnel
+        {/* <ResponsiveFunnel
         data={data}
         margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
         shapeBlending={0.56}
@@ -25,7 +24,7 @@ export const DataTable = ({data} /* see data tab */ ) => {
         currentPartSizeExtension={10}
         currentBorderWidth={40}
         motionConfig="wobbly"
-    />
+    /> */}
     </TableWrapper>
     );
 };

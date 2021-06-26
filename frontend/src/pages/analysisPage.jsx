@@ -1,26 +1,18 @@
 import React from 'react';
 
 // ============= styles & components =============
-import 'bootstrap/dist/css/bootstrap.min.css';
-import DetailedDataTable from '../components/DataAnalysis/detailedDataTable';
 
 import { AnalysisPageWrapper } from '../styles/analysisPage';
 
-import { DataTable } from '../components/dataTable';
 // ===============================================
-// =============== temp data =====================
-import { data } from '../components/dataTable/tempData';
+// ==================== data =====================
 // ===============================================
 
 const AnalysisPage = () => {
   return (
     <>
     <AnalysisPageWrapper>
-          <DetailedDataTable />
-          {/* <div style={{ height: '50em', width: '100%'}}>
-
-          <DataTable data={data} />
-          </div> */}
+    <p>this application is in <b>{process.env.NODE_ENV}</b> mode.</p>
     </AnalysisPageWrapper>
     </>
   );

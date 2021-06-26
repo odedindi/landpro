@@ -1,20 +1,24 @@
+// =============== react =============== 
 import React from 'react';
 import ReactDOM from 'react-dom';
+// ============== styles ===============
+import 'antd/dist/antd.css'
+import { ThemeProvider } from "styled-components";
+import { GlobalStyle, theme } from './styles/GlobalStyle'
+// ============ translation ============
+import './i18n';
 
-import { store } from "./store";
-import { Provider } from 'react-redux';
-
+// ============== routes ===============
 import Routes from "./routes";
 
-import { grommet, Grommet } from 'grommet';
 
 
 ReactDOM.render(
-
-     <Provider store={ store }>
-      <Grommet theme={ grommet }>
+    <>
+      <ThemeProvider theme={ theme }>
+        <GlobalStyle />
         <Routes />
-      </Grommet>
-    </Provider>,
+      </ThemeProvider>
+    </>,
   document.getElementById('root')
 );

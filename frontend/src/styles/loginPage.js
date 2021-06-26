@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { brandColor, LandProButton } from './index'
+import * as S from './index'
 
 export const LoginWrapper = styled.div `
     display: flex;
@@ -57,7 +57,7 @@ export const HideRevealButton = styled.div `
     }
 `;
 
-export const LoginButton = styled(LandProButton) `
+export const LoginButton = styled(S.LandProButton) `
     width: 100%;
     height: 3.5em;
     margin: 1.5em 0 1.5em 0;

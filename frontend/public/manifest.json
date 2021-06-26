@@ -1,10 +1,10 @@
 {
-  "short_name": "LandPro prototype",
-  "name": "LandPro CO2 content prototype",
+  "short_name": "LandPro Carbon",
+  "name": "LandPro CO2 Carbon Project",
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "64x64",
       "type": "image/x-icon"
     },
     {

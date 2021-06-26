@@ -7,5 +7,6 @@ export const headersWithToken = new Headers({
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${ localStorage.getItem('token') }`
 });
-export const localUrl = 'http://0.0.0.0:8000/'
-export const serverUrl = '';
+// const localUrl = 'http://0.0.0.0:8000/'
+const serverUrl = 'http://0.0.0.0:8000/';
+export const url = process.env.NODE_ENV === 'development' ? localUrl : serverUrl;
