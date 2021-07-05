@@ -1,7 +1,7 @@
 LandPro prototype WEBSITE - FRONTEND ONLY
 ==============================
 
-based on our climate_hackathon little project for the cool farm alliance challenge
+based on our climate_hackathon project for the cool farm alliance challenge
 
 Landing page v0.3:
 
