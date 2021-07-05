@@ -10,7 +10,7 @@ https://landpro.herokuapp.com/
 
 
 
-from the frontend forlder run yarn install
+from the frontend folder run yarn install
 if you dont have yarn you can (and totally should) add it globally with: 
 * npm install --global yarn
 
