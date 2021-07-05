@@ -3,7 +3,7 @@ LandPro prototype WEBSITE - FRONTEND ONLY
 
 based on our climate_hackathon project for the cool farm alliance challenge
 
-Landing page v0.3:
+Landing page v0.3.1:
 
 older version can be seen here:
 https://landpro.herokuapp.com/
