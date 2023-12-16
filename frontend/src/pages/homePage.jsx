@@ -97,9 +97,9 @@ const HomePage = () => {
           iconAlt="farmland"         
         />
 
-        <ContactFrom id="contact"
+{/*         <ContactFrom id="contact"
           title={ t('homePage.contact.title') }
-        />
+        /> */}
     </>
 
   );
